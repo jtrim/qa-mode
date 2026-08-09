@@ -2,7 +2,7 @@
 
 A [Pi](https://github.com/badlogic/pi) extension that toggles between **Q&A Mode** (bias toward inaction and information gathering) and **Action Mode** (bias toward taking action).
 
-## Use Case
+## Why?
 
 LLMs tend to bias toward action, and the more action they take, the more momentum they build toward further action. Once a model is in a flow of writing files and running commands, it becomes increasingly likely to keep acting - even when the user just wanted to pause and think.
 
