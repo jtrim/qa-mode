@@ -2,6 +2,7 @@ import type {
   ExtensionAPI,
   ExtensionContext,
 } from "@earendil-works/pi-coding-agent";
+import { Type } from "@earendil-works/pi-coding-agent";
 
 type QAModeState = {
   mode: "qa" | "action";
@@ -69,6 +70,47 @@ export default function (pi: ExtensionAPI) {
         },
       };
     }
+  });
+
+  // Tool: enter Q&A Mode (one-way; model cannot exit)
+  pi.registerTool({
+    name: "enter_qa_mode",
+    label: "Enter Q&A Mode",
+    description:
+      "Enter Q&A Mode. This is a one-way action: once entered, the model cannot exit Q&A Mode on its own. The user must toggle back to Action Mode via /qa.",
+    parameters: Type.Object({
+      reason: Type.String({
+        description: "Brief reason for entering Q&A Mode (shown to user).",
+      }),
+    }),
+    async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
+      if (state.mode === "qa") {
+        return {
+          content: [
+            {
+              type: "text",
+              text: "Already in Q&A Mode. The user must toggle to Action Mode via /qa.",
+            },
+          ],
+          details: { alreadyInQAMode: true },
+        };
+      }
+
+      state.mode = "qa";
+      pi.appendEntry("qa-mode-state", state);
+      updateStatus(ctx);
+      ctx.ui.notify(`Entered Q&A Mode: ${params.reason}`, "info");
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Entered Q&A Mode. Reason: ${params.reason}. Mutating tools (write/edit/bash) are now blocked. The user must toggle back to Action Mode via /qa.`,
+          },
+        ],
+        details: { enteredQAMode: true, reason: params.reason },
+      };
+    },
   });
 
   // Toggle command
