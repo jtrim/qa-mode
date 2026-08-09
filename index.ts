@@ -77,7 +77,7 @@ export default function (pi: ExtensionAPI) {
     name: "enter_qa_mode",
     label: "Enter Q&A Mode",
     description:
-      "Enter Q&A Mode. Bias toward inaction and information gathering. The user must toggle back to Action Mode via /qa.",
+      "Enter Q&A Mode. Bias toward inaction and information gathering.",
     parameters: Type.Object({
       reason: Type.String({
         description: "Brief reason for entering Q&A Mode (shown to user).",
