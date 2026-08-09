@@ -59,6 +59,15 @@ export default function (pi: ExtensionAPI) {
           display: false,
         },
       };
+    } else {
+      return {
+        message: {
+          customType: "qa-mode",
+          content:
+            "Q&A Mode is OFF. Action Mode is active. Bias toward taking action when appropriate. Prior Q&A Mode messages in this session no longer apply.",
+          display: false,
+        },
+      };
     }
   });
 
