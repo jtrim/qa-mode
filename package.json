@@ -1,0 +1,10 @@
+{
+  "name": "qa-mode",
+  "version": "0.1.0",
+  "description": "Pi extension for Q&A Mode / Action Mode toggle",
+  "private": true,
+  "type": "module",
+  "pi": {
+    "extensions": ["./index.ts"]
+  }
+}
