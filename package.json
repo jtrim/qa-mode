@@ -4,6 +4,9 @@
   "description": "Pi extension for Q&A Mode / Action Mode toggle",
   "private": true,
   "type": "module",
+  "dependencies": {
+    "typebox": "^1.0.0"
+  },
   "pi": {
     "extensions": ["./index.ts"]
   }

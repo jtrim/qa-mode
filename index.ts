@@ -2,7 +2,7 @@ import type {
   ExtensionAPI,
   ExtensionContext,
 } from "@earendil-works/pi-coding-agent";
-import { Type } from "@earendil-works/pi-coding-agent";
+import { Type } from "typebox";
 
 type QAModeState = {
   mode: "qa" | "action";
@@ -72,6 +72,18 @@ export default function (pi: ExtensionAPI) {
     }
   });
 
+  // Toggle command
+  pi.registerCommand("qa", {
+    description:
+      "Toggle between Q&A Mode (bias toward inaction) and Action Mode (bias toward action)",
+    handler: async (_args, ctx) => {
+      state.mode = state.mode === "qa" ? "action" : "qa";
+      pi.appendEntry("qa-mode-state", state);
+      updateStatus(ctx);
+      ctx.ui.notify(`Switched to ${state.mode.toUpperCase()} Mode`, "info");
+    },
+  });
+
   // Tool: enter Q&A Mode (one-way; model cannot exit)
   pi.registerTool({
     name: "enter_qa_mode",
@@ -110,18 +122,6 @@ export default function (pi: ExtensionAPI) {
         ],
         details: { enteredQAMode: true, reason: params.reason },
       };
-    },
-  });
-
-  // Toggle command
-  pi.registerCommand("qa", {
-    description:
-      "Toggle between Q&A Mode (bias toward inaction) and Action Mode (bias toward action)",
-    handler: async (_args, ctx) => {
-      state.mode = state.mode === "qa" ? "action" : "qa";
-      pi.appendEntry("qa-mode-state", state);
-      updateStatus(ctx);
-      ctx.ui.notify(`Switched to ${state.mode.toUpperCase()} Mode`, "info");
     },
   });
 }
